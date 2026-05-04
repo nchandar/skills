@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Brainstorm"
+  short_description: "Pressure-test ideas before implementation"
+  default_prompt: "Use $dev-brainstorm to turn this feature idea into an approved design before implementation."

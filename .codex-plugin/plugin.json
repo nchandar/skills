@@ -1,0 +1,40 @@
+{
+  "name": "dev-workflow-skills",
+  "version": "0.1.0",
+  "description": "Generic software development workflow skills for brainstorming, planning, TDD, debugging, review, and verification.",
+  "author": {
+    "name": "Niranjan Chandarraj"
+  },
+  "homepage": "https://github.com/niranjanchandarraj/dev-workflow-skills",
+  "repository": "https://github.com/niranjanchandarraj/dev-workflow-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "development",
+    "planning",
+    "tdd",
+    "debugging",
+    "code-review",
+    "verification"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dev Workflow Skills",
+    "shortDescription": "Generic planning, TDD, debug, review, and verify workflows",
+    "longDescription": "Use Dev Workflow Skills to guide coding agents through brainstorming, implementation planning, test-driven development, systematic debugging, changed-line code review, and final verification.",
+    "developerName": "Niranjan Chandarraj",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Brainstorm this feature before implementation.",
+      "Plan and implement this change with TDD.",
+      "Review and verify this diff."
+    ],
+    "brandColor": "#2563EB",
+    "screenshots": []
+  }
+}

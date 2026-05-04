@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Verify"
+  short_description: "Prove implementation matches intent before done"
+  default_prompt: "Use $dev-verify to verify this work against the approved design and tests."

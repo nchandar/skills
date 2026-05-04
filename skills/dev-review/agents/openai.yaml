@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Review"
+  short_description: "Review changed code line by line and system-wide"
+  default_prompt: "Use $dev-review to inspect these changes for correctness, risk, and missing tests."

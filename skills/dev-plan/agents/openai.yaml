@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Plan"
+  short_description: "Turn approved designs into executable plans"
+  default_prompt: "Use $dev-plan to turn this approved design into a technical implementation plan."

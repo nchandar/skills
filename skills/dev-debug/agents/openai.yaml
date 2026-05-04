@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Debug"
+  short_description: "Diagnose bugs with evidence and regression tests"
+  default_prompt: "Use $dev-debug to diagnose this issue from reproduction to root cause."
