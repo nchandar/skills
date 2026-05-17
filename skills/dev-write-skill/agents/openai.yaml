@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Write Skill"
+  short_description: "Create or revise a dev-* skill consistently"
+  default_prompt: "Use $dev-write-skill to create or update this skill using the repository's authoring standard."

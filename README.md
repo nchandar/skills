@@ -1,6 +1,6 @@
 # Development Skills
 
-Generic software development workflow skills for planning, implementation, debugging, review, and verification.
+Generic software development workflow skills for brainstorming, planning, implementation, debugging, review, verification, and skill authoring.
 
 These skills are intentionally language- and framework-neutral. They define the engineering process; project, language, framework, and organization-specific skills should provide technical details when needed.
 
@@ -15,6 +15,7 @@ These skills are intentionally language- and framework-neutral. They define the 
 │   ├── debug.md
 │   ├── dev-cycle.md
 │   ├── dev-review.md
+│   ├── dev-write-skill.md
 │   ├── plan.md
 │   ├── tdd.md
 │   └── verify.md
@@ -24,7 +25,8 @@ These skills are intentionally language- and framework-neutral. They define the 
     ├── dev-plan/
     ├── dev-review/
     ├── dev-tdd/
-    └── dev-verify/
+    ├── dev-verify/
+    └── dev-write-skill/
 ```
 
 ## Skill Flow
@@ -46,6 +48,7 @@ flowchart LR
 | `dev-debug` | Failure or root cause is unknown | Reproduction, hypothesis, tracing, regression test setup |
 | `dev-review` | Reviewing diffs, PRs, or generated code | Findings, changed-line scrutiny, system-level review |
 | `dev-verify` | Work is nearly done | Evidence, final diff check, requirement coverage, residual risk |
+| `dev-write-skill` | Creating or revising skills in this repository | Skill structure, naming, command alignment, metadata consistency |
 
 ## Principles
 
@@ -62,6 +65,7 @@ flowchart LR
 - Bug: `dev-debug` -> `dev-tdd` -> `dev-review` -> `dev-verify`
 - Existing PR/diff: `dev-review` -> `dev-verify`
 - Small clear change: quick pass through `dev-brainstorm`, then `dev-tdd` or direct implementation with explicit verification if the user approves.
+- Skill maintenance for this repo: `dev-write-skill`
 
 ## Slash Commands
 
@@ -72,6 +76,7 @@ flowchart LR
 | `/tdd` | `dev-tdd` | Implement one behavior with red-green-refactor |
 | `/debug` | `dev-debug` | Diagnose unknown root cause |
 | `/dev-review` | `dev-review` | Review a diff or PR without colliding with Claude's built-in `/review` |
+| `/dev-write-skill` | `dev-write-skill` | Create or revise a skill in this repository |
 | `/verify` | `dev-verify` | Prove work is complete |
 | `/dev-cycle` | all workflow skills | Run the full development workflow |
 
