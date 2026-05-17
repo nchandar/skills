@@ -9,6 +9,8 @@ description: Execute an approved implementation plan task by task and route each
 
 Use this skill to carry an approved plan through to completion. It is the execution orchestrator: it chooses the next task, routes implementation slices through `dev-tdd`, uses `dev-debug` when the cause of failure is unclear, and always ends with `dev-review` and `dev-verify`.
 
+This is a controller skill. It should use delegated agents or subagents for isolated slices when the platform supports them, but it must be able to run the same workflow inline.
+
 ## When To Use
 
 Use this skill when:
@@ -32,6 +34,14 @@ Do not use this skill when:
 6. Run `dev-verify` before declaring the work done.
 
 Default posture: continue automatically until blocked or complete. Do not stop for unnecessary check-ins.
+
+## Delegation Contract
+
+- Prefer delegation for self-contained implementation slices, focused debug tasks, and review passes.
+- Fall back to inline execution when the slice is tiny, tightly coupled to neighboring work, or the platform does not support strong delegation.
+- Use `dev-tdd` as the default worker skill for implementation slices.
+- Use `dev-debug` first when root cause is unknown, then return to `dev-tdd`.
+- Always preserve the same end-state: `dev-review` followed by `dev-verify`.
 
 ## Outputs And Handoffs
 

@@ -114,6 +114,43 @@ flowchart LR
 - Keep the main workflow skills composable and explicit about handoffs.
 - Keep the skills generic; defer stack-specific rules to separate skills.
 
+## Execution Model
+
+The catalog uses two execution roles:
+
+- **Controller skills**: coordinate work, choose the next stage, and may delegate to subagents when the platform supports it well.
+- **Worker skills**: perform a focused unit of reasoning or implementation and must be runnable inline or as delegated units.
+
+Controller skills:
+
+- `dev-cycle`
+- `dev-execute`
+- `dev-parallel`
+- `dev-worktree`
+
+Hybrid skill:
+
+- `dev-improve-architecture` is mostly inline, but may delegate broad exploration.
+
+Worker skills:
+
+- `dev-brainstorm`
+- `dev-grill-with-docs`
+- `dev-plan`
+- `dev-debug`
+- `dev-tdd`
+- `dev-review`
+- `dev-verify`
+- `dev-zoom-out`
+- `dev-handoff`
+- `dev-setup`
+- `dev-write-skill`
+
+Cross-platform rule:
+
+- When the platform supports delegated agents well, controller skills may use them.
+- When delegation is weak or unavailable, the same workflow should run inline without changing the stage boundaries or final review/verification requirements.
+
 ## Suggested Usage
 
 - Full workflow: `dev-cycle`

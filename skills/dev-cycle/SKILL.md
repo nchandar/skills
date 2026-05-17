@@ -9,6 +9,8 @@ description: Run the full development workflow from request to reviewed and veri
 
 Use this skill as the top-level controller across Claude, Codex, and OpenCode. It decides which workflow skill should start the job, moves through the right handoffs, and only stops when the work is complete or a real blocker remains.
 
+This is a controller skill. It may delegate stages to subagents when the platform supports that well, but it must preserve the same workflow inline when delegation is unavailable or unnecessary.
+
 ## When To Use
 
 Use this skill when:
@@ -36,6 +38,13 @@ Do not use this skill when:
 4. Ensure the work passes through `dev-verify`.
 
 Default posture: continue automatically until blocked or done.
+
+## Delegation Contract
+
+- Prefer delegation for isolated workflow stages when the platform supports subagents well.
+- Fall back to inline execution when the task is small, tightly coupled, or the platform's delegation model is weak.
+- Delegation must not change the workflow shape: the same stage boundaries and final gates still apply.
+- `dev-cycle` always ends with `dev-review` and `dev-verify`, whether stages ran inline or through delegated agents.
 
 ## Outputs And Handoffs
 

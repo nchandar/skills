@@ -9,6 +9,8 @@ description: Find architectural friction and propose concrete structural improve
 
 Use this skill to inspect a codebase for structural friction and surface candidate improvements before committing to implementation. Focus on module boundaries, leverage, locality, coupling, and testability.
 
+This is mostly a worker skill, but it may optionally delegate broad codebase exploration when that helps gather candidate architecture improvements faster.
+
 ## When To Use
 
 Use this skill when:
@@ -29,6 +31,12 @@ Do not use this skill when:
 3. Explain the problem, proposed change, and expected benefits for each candidate.
 4. Let the user choose one candidate to explore.
 5. Refine that candidate into something that can hand off to `dev-plan`.
+
+## Delegation Contract
+
+- Stay inline by default for the reasoning and architecture conversation.
+- Optionally delegate broad exploration or subsystem scanning when the platform supports it and the codebase surface is large.
+- Delegation is for evidence gathering, not for replacing the final architectural judgment.
 
 ## Outputs And Handoffs
 

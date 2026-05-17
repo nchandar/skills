@@ -9,6 +9,8 @@ description: Split independent tasks or investigations into parallel subagent wo
 
 Use this skill when multiple tasks are independent enough to run in parallel without interfering with each other.
 
+This is a controller skill. Its job is to decide whether work is truly independent and then dispatch or sequence it safely.
+
 ## When To Use
 
 Use this skill when:
@@ -28,6 +30,13 @@ Do not use this skill when:
 2. Give each domain a focused prompt and clear output expectations.
 3. Run the work in parallel.
 4. Consolidate results and check for conflicts.
+
+## Delegation Contract
+
+- Prefer delegation when multiple domains are truly independent and the platform supports concurrent agent work.
+- Fall back to structured sequential execution when parallel agent support is weak or when conflict risk is non-trivial.
+- Every branch must have explicit scope and expected outputs.
+- Parallel work is not complete until results are consolidated and checked for conflicts.
 
 ## Outputs And Handoffs
 
