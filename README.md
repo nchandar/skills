@@ -151,6 +151,24 @@ or:
 .claude/commands/
 ```
 
+## OpenCode
+
+OpenCode uses a plugin entry point instead of the Claude/Codex plugin metadata files.
+
+Install this repository by adding it to the `plugin` array in your `opencode.json`:
+
+```json
+{
+  "plugin": ["dev-workflow-skills@git+https://github.com/niranjanchandarraj/dev-workflow-skills.git"]
+}
+```
+
+The plugin entry point lives at `.opencode/plugins/dev-workflow-skills.js`. It registers this repository's `skills/` directory with OpenCode and injects a small bootstrap so `dev-cycle` and the rest of the `dev-*` workflow are discoverable at session start.
+
+For a local checkout, you can also use an absolute path in `opencode.json` instead of the git-backed spec.
+
+Detailed install notes: `.opencode/INSTALL.md`
+
 ## Codex
 
 Codex can use this as a plugin through `.codex-plugin/plugin.json`. The individual skill folders include `agents/openai.yaml` metadata for Codex/OpenAI UI surfaces.
