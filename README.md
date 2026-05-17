@@ -165,6 +165,8 @@ Install this repository by adding it to the `plugin` array in your `opencode.jso
 
 The plugin entry point lives at `.opencode/plugins/dev-workflow-skills.js`. It registers this repository's `skills/` directory with OpenCode and injects a small bootstrap so `dev-cycle` and the rest of the `dev-*` workflow are discoverable at session start.
 
+The same plugin also registers the files in `commands/` as OpenCode commands, so `/dev-cycle`, `/dev-plan`, `/dev-debug`, and the rest of the `dev-*` command surface should be available after restart.
+
 For a local checkout, you can also use an absolute path in `opencode.json` instead of the git-backed spec.
 
 Detailed install notes: `.opencode/INSTALL.md`

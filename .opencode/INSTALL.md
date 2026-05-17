@@ -14,6 +14,8 @@ Restart OpenCode after saving the config.
 
 The plugin registers this repository's `skills/` directory automatically and injects a small bootstrap so the agent knows the `dev-*` workflow exists.
 
+It also registers the repository's `commands/` directory as OpenCode commands, so entries like `/dev-cycle`, `/dev-plan`, and `/dev-debug` are available after restart.
+
 ## Verify
 
 Use OpenCode's native `skill` tool to list the installed skills.
@@ -22,6 +24,7 @@ Suggested smoke tests:
 
 - ask for the full workflow and confirm `dev-cycle` is available
 - ask to list skills and confirm the `dev-*` catalog appears
+- type `/dev-cycle` and confirm the command is available
 
 ## Manual Local Install
 

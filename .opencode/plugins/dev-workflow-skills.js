@@ -1,7 +1,44 @@
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const extractFrontmatter = (content) => {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return { frontmatter: {}, body: content };
+
+  const frontmatter = {};
+  for (const line of match[1].split('\n')) {
+    const idx = line.indexOf(':');
+    if (idx <= 0) continue;
+    const key = line.slice(0, idx).trim();
+    const value = line.slice(idx + 1).trim().replace(/^["']|["']$/g, '');
+    frontmatter[key] = value;
+  }
+
+  return { frontmatter, body: match[2].trim() };
+};
+
+const loadCommands = (commandsDir) => {
+  if (!fs.existsSync(commandsDir)) return {};
+
+  const commands = {};
+  for (const file of fs.readdirSync(commandsDir)) {
+    if (!file.endsWith('.md')) continue;
+    const name = file.replace(/\.md$/, '');
+    const fullPath = path.join(commandsDir, file);
+    const content = fs.readFileSync(fullPath, 'utf8');
+    const { frontmatter, body } = extractFrontmatter(content);
+
+    commands[name] = {
+      description: frontmatter.description || `Run ${name}`,
+      prompt: body.replace(/^# .*?\n\n/, '').trim()
+    };
+  }
+
+  return commands;
+};
 
 const BOOTSTRAP = `<IMPORTANT>
 You have dev workflow skills installed.
@@ -20,6 +57,8 @@ Preferred entry points:
 
 export default async () => {
   const skillsDir = path.resolve(__dirname, '../../skills');
+  const commandsDir = path.resolve(__dirname, '../../commands');
+  const commands = loadCommands(commandsDir);
 
   return {
     config: async (config) => {
@@ -27,6 +66,11 @@ export default async () => {
       config.skills.paths = config.skills.paths || [];
       if (!config.skills.paths.includes(skillsDir)) {
         config.skills.paths.push(skillsDir);
+      }
+
+      config.command = config.command || {};
+      for (const [name, command] of Object.entries(commands)) {
+        config.command[name] = command;
       }
     },
 
