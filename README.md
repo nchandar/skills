@@ -4,6 +4,26 @@ Generic software development workflow skills for design, planning, execution, de
 
 These skills are intentionally language- and framework-neutral. They define the engineering process; project, language, framework, and organization-specific skills should provide technical details when needed.
 
+## Installation
+
+Use the provided `Makefile` targets to install the workflow on the supported platforms:
+
+```sh
+make install-claude
+make install-codex
+make install-opencode
+make install-all
+```
+
+What each target does:
+
+- `make install-claude`: symlinks `skills/` and `commands/` into `~/.claude/`
+- `make install-codex`: symlinks `skills/` into `~/.codex/skills/`
+- `make install-opencode`: adds this repository's local path to the `plugin` array in `~/.config/opencode/opencode.jsonc`
+- `make install-all`: runs all three installers in sequence
+
+All targets are safe to rerun. Existing matching symlinks are left alone, and existing non-symlink files are skipped with a message.
+
 ## Layout
 
 ```text
@@ -127,6 +147,12 @@ flowchart LR
 
 ## Claude Code
 
+Quick install:
+
+```sh
+make install-claude
+```
+
 Claude Code can use the plugin layout directly when installed as a plugin. For manual personal installation, copy the skill folders to:
 
 ```text
@@ -153,6 +179,12 @@ or:
 
 ## OpenCode
 
+Quick install:
+
+```sh
+make install-opencode
+```
+
 OpenCode uses a plugin entry point instead of the Claude/Codex plugin metadata files.
 
 Install this repository by adding it to the `plugin` array in your `opencode.json`:
@@ -169,8 +201,18 @@ The same plugin also registers the files in `commands/` as OpenCode commands, so
 
 For a local checkout, you can also use an absolute path in `opencode.json` instead of the git-backed spec.
 
+The installer uses the local checkout path by default so the current machine picks up changes immediately.
+
 Detailed install notes: `.opencode/INSTALL.md`
 
 ## Codex
 
+Quick install:
+
+```sh
+make install-codex
+```
+
 Codex can use this as a plugin through `.codex-plugin/plugin.json`. The individual skill folders include `agents/openai.yaml` metadata for Codex/OpenAI UI surfaces.
+
+The installer links this repository's skill folders into `~/.codex/skills/`.
