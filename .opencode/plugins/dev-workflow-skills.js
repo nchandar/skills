@@ -31,9 +31,11 @@ const loadCommands = (commandsDir) => {
     const content = fs.readFileSync(fullPath, 'utf8');
     const { frontmatter, body } = extractFrontmatter(content);
 
+    const template = body.replace(/^# .*?\n\n/, '').trim();
     commands[name] = {
       description: frontmatter.description || `Run ${name}`,
-      prompt: body.replace(/^# .*?\n\n/, '').trim()
+      template,
+      prompt: template
     };
   }
 
