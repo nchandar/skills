@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Handoff"
+  short_description: "Package progress for the next session"
+  default_prompt: "Use $dev-handoff to produce a concise continuation handoff for this work."

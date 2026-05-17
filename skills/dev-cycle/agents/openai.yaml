@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Cycle"
+  short_description: "Run the full dev workflow end to end"
+  default_prompt: "Use $dev-cycle to choose the right dev-* workflow, continue automatically, and finish with review and verification."

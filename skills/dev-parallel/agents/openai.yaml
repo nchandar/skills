@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Parallel"
+  short_description: "Run independent work in parallel"
+  default_prompt: "Use $dev-parallel to split these independent tasks across parallel subagents and consolidate the results."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Setup"
+  short_description: "Set lightweight workflow conventions"
+  default_prompt: "Use $dev-setup to establish the documentation and artifact conventions for this repository's dev-* workflow."

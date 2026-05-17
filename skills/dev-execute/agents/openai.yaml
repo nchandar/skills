@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Execute"
+  short_description: "Run an approved plan through to completion"
+  default_prompt: "Use $dev-execute to carry this approved plan through implementation, review, and verification."

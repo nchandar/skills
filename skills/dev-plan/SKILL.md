@@ -1,159 +1,66 @@
 ---
 name: dev-plan
-description: Convert an approved design, spec, bug diagnosis, or clear requirement into a precise technical implementation plan before editing code. Use when the user asks to plan implementation, break down work, turn a brainstorm/spec into tasks, prepare a TDD plan, sequence a refactor, or create an execution checklist with files, tests, risks, and verification steps.
+description: Convert an approved design, bug diagnosis, or clear requirement into an executable implementation plan before editing code. Use when the user wants a technical task breakdown, execution checklist, TDD-ready slices, or a step-by-step plan with file impact, tests, review gates, and verification.
 ---
 
 # Dev Plan
 
 ## Overview
 
-Turn an approved intent into an executable plan that a competent engineer or agent can follow without guessing. The plan should connect every task to user-visible behavior, affected files, tests, review checks, and final verification.
+Turn approved intent into a plan that an engineer or agent can execute without guessing. The plan should break work into small verifiable slices, explain why each file changes, and make testing, review, and verification explicit.
 
-This skill plans implementation; it does not write production code.
+This skill owns execution planning. It does not implement production code.
 
-## Core Rules
+## When To Use
 
-- Start from an approved design, spec, bug diagnosis, or clear requirement. If intent is still ambiguous, hand back to `dev-brainstorm`.
-- Inspect the repository before planning. Use existing architecture, tests, commands, naming, and file organization.
-- Prefer the smallest independently verifiable increments.
-- Make every task evidence-driven: test, build, lint, typecheck, manual check, metric, or observable behavior.
-- Plan line-level scrutiny and big-picture review. Each task should say what changed lines must prove and what system contract they affect.
-- Stay generic. Detect stack/tooling from the repo; defer stack-specific details to language/framework skills.
-- Use bullets, tables, and diagrams for clarity. Avoid paragraph-heavy plans.
+Use this skill when:
+
+- the design is approved and implementation tasks need to be sequenced
+- a bug is diagnosed and the fix needs a safe rollout plan
+- the user asks to break work into steps, slices, or checklists
+
+Do not use this skill when:
+
+- the design is still unclear; use `dev-brainstorm` or `dev-grill-with-docs`
+- the work should be executed now from an existing plan; use `dev-execute`
 
 ## Workflow
 
-### 1. Confirm Inputs
+1. Confirm the goal, scope, constraints, and verification requirements.
+2. Inspect the repository areas, tests, and commands that shape the implementation.
+3. Choose the simplest implementation shape that fits the approved design.
+4. Break the work into reviewable slices.
+5. For each slice, list the affected files, the reason they change, the proving tests or checks, and the expected evidence.
+6. Add review and verification gates.
+7. Hand off to `dev-execute`.
 
-Build a short planning context table:
+Each task should usually answer:
 
-| Input | Source | Status |
-|---|---|---|
-| Goal | [design/spec/user request] | Clear / unclear |
-| Scope | [included/excluded work] | Clear / unclear |
-| Constraints | [repo docs/tests/tooling] | Clear / unclear |
-| Verification | [tests/checks] | Clear / missing |
+- what behavior or outcome it delivers
+- which files change and why
+- which test or check proves it
+- what review concern matters most
 
-If a required input is unclear, ask one focused question with a recommended answer. Do not proceed with a plan that hides ambiguity.
+## Outputs And Handoffs
 
-### 2. Map the Existing System
+A plan should usually include:
 
-Inspect enough code to understand where the change belongs:
+- goal and scope
+- existing system map
+- task list in execution order
+- test strategy
+- review gates
+- verification checklist
+- open questions, if any remain
 
-- Entry points, public APIs, UI surfaces, jobs, commands, or integration boundaries.
-- Current tests and fixtures near the behavior.
-- Data models, persistence, configuration, permissions, and error handling.
-- Build/test/lint/typecheck commands available in the repo.
+Default handoff: `dev-execute`
 
-Summarize as a compact map:
+If the user asks for a durable plan artifact or the repo already has a convention, write the plan there. Otherwise keep it conversational.
 
-| Area | Existing file(s) | Responsibility | Planned impact |
-|---|---|---|---|
-| [area] | `[path]` | [what it owns] | none / modify / test |
+## Common Mistakes
 
-Use a diagram when the change spans components:
-
-```mermaid
-flowchart LR
-  Input[Trigger/Input] --> Boundary[Public boundary]
-  Boundary --> Logic[Core logic]
-  Logic --> Output[Observable result]
-```
-
-### 3. Choose Implementation Shape
-
-Compare meaningful options when there is more than one path:
-
-| Approach | Fit | Risks | Decision |
-|---|---|---|---|
-| [recommended] | [why it fits] | [main risk] | Use |
-| [alternative] | [when it fits] | [trade-off] | Do not use because [reason] |
-
-Prefer designs that are simple, testable through public behavior, easy to review, and reversible.
-
-### 4. Break Into Tasks
-
-Each task should be small enough to review and verify independently.
-
-Task template:
-
-````markdown
-### Task N: [Outcome]
-
-**Goal**
-- [one observable behavior or structural improvement]
-
-**Files**
-| Path | Action | Reason |
-|---|---|---|
-| `[path]` | create/modify/test | [why this file changes] |
-
-**Line-Level Checks**
-| Check | Why it matters |
-|---|---|
-| Each changed condition proves a named behavior | Prevents accidental branch logic |
-| Each new dependency is necessary | Prevents coupling creep |
-| Each error path is intentional | Prevents silent failures |
-
-**Steps**
-- [ ] Write or update the failing behavior/regression test.
-- [ ] Run the targeted test and confirm the expected failure.
-- [ ] Implement the smallest change that makes the test pass.
-- [ ] Run the targeted test and relevant nearby tests.
-- [ ] Review the diff line by line against the task goal.
-- [ ] Update docs/types/contracts only if behavior changed.
-
-**Verification**
-| Command or check | Expected evidence |
-|---|---|
-| `[command]` | [pass/fail expectation or observable result] |
-````
-
-Use `dev-tdd` for the execution of test-first implementation tasks.
-
-### 5. Add Risk and Review Gates
-
-Every plan should include gates:
-
-| Gate | Required evidence |
-|---|---|
-| Test-first behavior | failing test observed before implementation |
-| Changed-line review | every changed line has a reason tied to behavior, structure, or verification |
-| System review | public contracts, data flow, permissions, errors, and compatibility still make sense |
-| Final verification | relevant automated/manual checks pass with clean output |
-
-For risky work, add rollout and rollback:
-
-| Risk | Mitigation | Rollback |
-|---|---|---|
-| [risk] | [guard/test/check] | [how to undo or disable] |
-
-### 6. Produce the Plan
-
-Write the final plan with:
-
-- Goal and scope.
-- System map.
-- Chosen approach.
-- Task list.
-- Test strategy.
-- Review gates.
-- Verification checklist.
-- Open questions.
-
-If the user asks for a durable plan or the repo has a plan convention, write it there. Otherwise use:
-
-```text
-docs/dev/plans/YYYY-MM-DD--short-name.md
-```
-
-Only create a plan file after the user approves or explicitly asks for one.
-
-## Anti-Patterns
-
-- Planning before the goal is understood.
-- Hiding uncertainty inside vague tasks.
+- Planning before the goal is actually clear.
+- Creating tasks that are too large to review or verify independently.
 - Listing files without saying why they change.
-- Creating tasks that cannot be tested or reviewed independently.
-- Writing implementation code inside the planning phase.
-- Assuming stack-specific commands without detecting them from the repo.
+- Hiding uncertainty inside vague steps.
+- Writing implementation code instead of a plan.

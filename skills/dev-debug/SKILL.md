@@ -1,130 +1,61 @@
 ---
 name: dev-debug
-description: Diagnose bugs, regressions, flaky behavior, performance problems, and unexpected production or test failures with an evidence-first workflow. Use when something is broken, a test fails unexpectedly, behavior differs from expectation, root cause is unknown, or the user asks to investigate, diagnose, triage, reproduce, isolate, instrument, or fix a bug.
+description: Diagnose bugs, regressions, flaky behavior, and unexpected failures with an evidence-first workflow before implementing a fix. Use when something is broken, a test fails unexpectedly, behavior differs from expectation, or root cause is unknown and the next step is to reproduce, isolate, and explain the failure.
 ---
 
 # Dev Debug
 
 ## Overview
 
-Debug by evidence, not guessing. Reproduce the failure, minimize it, form hypotheses, inspect the relevant code line by line, identify the root cause, add a regression test, then fix the smallest responsible behavior.
+Debug by evidence, not guessing. Reproduce the failure, shrink it to the tightest useful case, build hypotheses, and explain the root cause before changing production behavior.
 
-This skill diagnoses and prepares the fix. Use `dev-tdd` for the fix implementation and `dev-verify` for final proof.
+This skill owns diagnosis. It hands implementation to `dev-tdd` once the cause is understood.
 
-## Core Rules
+## When To Use
 
-- Reproduce before fixing. If reproduction is impossible, define the best available evidence and uncertainty.
-- Keep a hypothesis table. Do not chase random changes.
-- Inspect both the failing line and the system around it: inputs, state, dependencies, timing, contracts, and recent changes.
-- Prefer instrumentation and targeted tests over broad rewrites.
-- Fix root cause, not just the symptom.
-- Add or update a regression test whenever practical.
-- Stay generic. Detect stack/tooling from the repo.
+Use this skill when:
+
+- something is broken and the cause is not yet clear
+- a test fails unexpectedly
+- behavior is flaky, intermittent, or timing-sensitive
+- the user asks to investigate, isolate, or diagnose a problem
+
+Do not use this skill when:
+
+- the behavior to implement is already known; use `dev-tdd`
+- the user wants a broad design conversation; use `dev-brainstorm`
 
 ## Workflow
 
-### 1. Capture the Symptom
+1. Capture the symptom, expected behavior, scope, and current evidence.
+2. Find the shortest reproduction path.
+3. Minimize the failure until the behavior is isolated enough to reason about.
+4. Build a small hypothesis table and test the most likely explanation first.
+5. Trace the root cause through the relevant inputs, state, contracts, and timing assumptions.
+6. Summarize the diagnosis and the regression test that should prove it.
+7. Hand off to `dev-tdd` for the actual fix.
 
-Create a concise incident table:
+Prefer instrumentation, assertions, logs, and targeted tests over broad rewrites. Do not patch based on vibes.
 
-| Field | Details |
-|---|---|
-| Observed behavior | [what happens] |
-| Expected behavior | [what should happen] |
-| Scope | local / test / staging / production / unknown |
-| Frequency | always / intermittent / data-specific / unknown |
-| First known bad | [commit/time/version if known] |
-| Evidence | logs, stack traces, screenshots, test output |
+## Outputs And Handoffs
 
-If evidence is missing, ask for the smallest useful artifact: failing command, logs, screenshot, input data, or reproduction steps.
+A good debug result should usually include:
 
-### 2. Reproduce and Minimize
+- observed behavior
+- expected behavior
+- minimal reproduction path
+- root cause summary
+- proof for the diagnosis
+- regression test idea
 
-Find the shortest feedback loop:
+Default handoff: `dev-tdd`
 
-| Reproduction path | Command/input | Expected failure |
-|---|---|---|
-| targeted test | `[command]` | [failure] |
-| local action | [steps] | [failure] |
-| log/query inspection | [source] | [signal] |
+After implementation, use `dev-review` and `dev-verify` to confirm the fix is correct and complete.
 
-Reduce the case until it isolates the behavior:
-
-- Smaller input.
-- Narrower test.
-- Single endpoint/component/function when possible.
-- Controlled data and configuration.
-
-Do not edit production code until the failure is understood or the user approves exploratory changes.
-
-### 3. Build Hypotheses
-
-Use a table:
-
-| Hypothesis | Evidence for | Evidence against | Next check |
-|---|---|---|---|
-| [possible cause] | [signal] | [counter-signal] | [specific command/read/instrumentation] |
-
-Prioritize hypotheses that explain all observed facts with the fewest assumptions.
-
-### 4. Trace the Root Cause
-
-Inspect the path from input to failure:
-
-```mermaid
-flowchart LR
-  Input[Input/state] --> Boundary[Boundary]
-  Boundary --> Logic[Decision point]
-  Logic --> Failure[Observed failure]
-```
-
-At each changed or suspicious line, ask:
-
-- What assumption does this line make?
-- What input/state violates that assumption?
-- Is the failure caused here or only exposed here?
-- What test would fail if this line regressed again?
-- What upstream/downstream contract depends on it?
-
-Use logs, debugger output, assertions, or temporary instrumentation when reading code is not enough. Remove temporary instrumentation before finishing unless it becomes intentional observability.
-
-### 5. Prove the Diagnosis
-
-Before fixing, summarize:
-
-| Root cause | Proof | Regression test idea |
-|---|---|---|
-| [cause] | [evidence] | [test/check] |
-
-If multiple plausible causes remain, continue narrowing. Do not patch based on vibes.
-
-### 6. Fix With TDD
-
-Hand off to `dev-tdd`:
-
-- Write the regression test first.
-- Confirm it fails for the diagnosed reason.
-- Implement the minimal root-cause fix.
-- Confirm the regression test and nearby tests pass.
-
-### 7. Verify the Fix
-
-After implementation:
-
-| Verification | Evidence |
-|---|---|
-| Original reproduction no longer fails | [command/output] |
-| Regression test passes | [command/output] |
-| Nearby behavior unaffected | [tests/manual check] |
-| Root cause explanation matches diff | yes/no |
-
-Use `dev-review` for code inspection and `dev-verify` for completion proof.
-
-## Anti-Patterns
+## Common Mistakes
 
 - Fixing before reproducing.
 - Changing multiple variables at once.
-- Treating stack trace location as root cause without tracing inputs.
+- Treating the stack trace location as the root cause without tracing inputs.
 - Adding broad retries, sleeps, or null checks without explaining why they are correct.
-- Removing failing tests instead of understanding them.
-- Stopping at "works now" without regression coverage or documented evidence.
+- Stopping at "works now" without a regression test story.

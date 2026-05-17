@@ -2,7 +2,7 @@
 description: Review a diff, PR, or generated code for correctness and risk.
 ---
 
-# Review
+# Dev Review
 
 Use the `dev-review` skill.
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Worktree"
+  short_description: "Set up an isolated workspace"
+  default_prompt: "Use $dev-worktree to create or confirm an isolated workspace before executing this work."

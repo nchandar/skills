@@ -1,127 +1,62 @@
 ---
 name: dev-review
-description: Review code changes with both changed-line scrutiny and system-level reasoning. Use for pull request review, self-review before completion, reviewing generated code, inspecting diffs after TDD slices, checking implementation against a plan/spec, or when the user asks to review, audit, critique, inspect, or validate changed code for correctness, tests, security, maintainability, and architectural fit.
+description: Review code changes with changed-line scrutiny and system-level reasoning. Use for pull request review, self-review before completion, reviewing generated code, inspecting diffs after implementation slices, or whenever the user asks to audit changed code for correctness, regressions, tests, maintainability, or architectural fit.
 ---
 
 # Dev Review
 
 ## Overview
 
-Review like a senior engineer: every changed line must justify itself, and the whole change must still make sense as a system. Lead with concrete findings, not summaries.
+Review like a senior engineer: every changed line must justify itself, and the whole change must still make sense as a system. Lead with findings, not summaries.
 
-This skill reviews; it does not rewrite code unless the user asks for fixes.
+This skill reviews code changes. It does not rewrite code unless the user explicitly asks for fixes.
 
-## Core Rules
+## When To Use
 
-- Review the diff first, then inspect surrounding code needed to understand contracts and risk.
-- Question every changed line: is it necessary, correct, tested, named clearly, and consistent with nearby code?
-- Step back after line review: does the whole change fit the design, architecture, data flow, and user behavior?
-- Prioritize bugs, regressions, missing tests, security/privacy issues, and maintainability risks.
-- Cite exact file paths and line numbers when possible.
-- Use severity. Critical/blocking issues come first.
-- Stay generic. Use repo conventions and relevant language/framework skills for stack-specific review.
-- Do not approve based only on tests passing.
+Use this skill when:
 
-## Review Inputs
+- reviewing a diff, PR, or generated code
+- self-reviewing a completed slice before moving on
+- checking implementation against a design or plan
 
-Collect:
+Do not use this skill when:
 
-| Input | Source |
-|---|---|
-| Diff | `git diff`, PR diff, or provided patch |
-| Intent | approved design, plan, issue, or user request |
-| Verification | test/lint/typecheck/build output if available |
-| Context | surrounding code, docs, contracts, recent changes |
+- the user wants final completion proof; use `dev-verify`
+- the work is still in diagnosis mode; use `dev-debug`
 
-If intent is missing, infer cautiously and state the assumption. Ask one question if the review cannot be meaningful without it.
+## Workflow
 
-## Review Passes
+1. Read the diff first.
+2. Inspect enough surrounding code to understand contracts and risk.
+3. Review changed lines for correctness, necessity, tests, edge cases, and naming.
+4. Step back and review system-level behavior, contracts, and compatibility.
+5. Report findings ordered by severity with exact locations when possible.
 
-### 1. Intent and Scope
+Prefer findings about bugs, regressions, missing tests, security/privacy risk, and maintainability over style commentary.
 
-Check:
+## Outputs And Handoffs
 
-- Does the change solve the stated problem?
-- Is anything outside scope?
-- Are there missing files, migrations, docs, tests, or configs?
-- Does the implementation contradict the approved design?
-
-### 2. Changed-Line Review
-
-For each changed block, inspect:
-
-| Line-level question | Risk caught |
-|---|---|
-| Why does this line need to change? | unnecessary churn |
-| What input/state can break it? | correctness bugs |
-| What test proves it? | missing coverage |
-| What contract depends on it? | compatibility regressions |
-| What happens on error/empty/null/timeout? | edge-case failures |
-| Does the name/type/API express intent? | maintainability issues |
-
-For generated or repetitive code, sample the pattern and inspect the generator/source of truth if available.
-
-### 3. System-Level Review
-
-Use a compact map for non-trivial changes:
-
-```mermaid
-flowchart LR
-  Caller --> Boundary
-  Boundary --> ChangedCode
-  ChangedCode --> Dependency
-  ChangedCode --> ObservableResult
-```
-
-Check:
-
-- Public API, UI, CLI, job, event, or data-contract behavior.
-- State transitions and concurrency/timing assumptions.
-- Persistence, migrations, versioning, and backward compatibility.
-- Permissions, trust boundaries, sensitive data, and input validation.
-- Observability, logs, metrics, and useful error messages.
-- Rollout/rollback when runtime behavior changes.
-
-### 4. Test Review
-
-| Test question | Expected answer |
-|---|---|
-| Does a test fail without the implementation? | yes, for behavior changes |
-| Does it test public behavior? | yes where practical |
-| Does it cover important edge/error paths? | yes for meaningful risk |
-| Does it avoid over-mocking? | yes |
-| Are manual checks documented when automation is not practical? | yes |
-
-Missing tests are findings when they create regression risk.
-
-### 5. Findings Format
-
-Lead with findings:
+Default review output:
 
 ```markdown
 Findings
 
 | Severity | Location | Issue | Recommendation |
 |---|---|---|---|
-| Critical/High/Medium/Low | `[file:line]` | [specific problem and impact] | [specific fix or check] |
+| High/Medium/Low | `[file:line]` | [specific problem and impact] | [specific fix or check] |
 ```
 
-Severity guide:
+If no issues are found, say so clearly and note residual risks or unverified checks.
 
-| Severity | Meaning |
-|---|---|
-| Critical | data loss, security issue, build break, production outage, severe regression |
-| High | likely user-visible bug or broken core workflow |
-| Medium | edge-case bug, missing important test, maintainability risk |
-| Low | naming, minor clarity, small cleanup |
+Default handoff:
 
-If no issues are found, say so clearly and list residual risk or unverified checks.
+- back to implementation for fixes when findings exist
+- to `dev-verify` when the diff is ready for completion proof
 
-## Anti-Patterns
+## Common Mistakes
 
 - Summarizing before findings.
 - Reviewing only style while missing behavior.
-- Trusting generated code without inspecting changed contracts.
 - Reviewing only changed lines and ignoring affected callers.
-- Requiring personal preference changes without a correctness or maintainability reason.
-- Saying "looks good" without noting what was verified.
+- Trusting generated code without inspecting changed contracts.
+- Saying "looks good" without noting what was actually checked.

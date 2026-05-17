@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Grill With Docs"
+  short_description: "Interrogate designs and maintain shared language"
+  default_prompt: "Use $dev-grill-with-docs to sharpen this design one question at a time and update durable docs only when useful."

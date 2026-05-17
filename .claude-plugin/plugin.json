@@ -1,6 +1,6 @@
 {
   "name": "dev-workflow-skills",
-  "description": "Generic software development workflow skills for brainstorming, planning, TDD, debugging, review, verification, and skill authoring.",
+  "description": "Generic software development workflow skills for design, planning, execution, debugging, review, verification, workflow support, architecture improvement, and skill authoring.",
   "version": "0.1.0",
   "author": {
     "name": "Niranjan Chandarraj"
@@ -16,6 +16,8 @@
     "debugging",
     "code-review",
     "verification",
+    "execution",
+    "architecture",
     "skill-authoring"
   ]
 }

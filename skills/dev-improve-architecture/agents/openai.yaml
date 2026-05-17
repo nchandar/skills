@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Improve Architecture"
+  short_description: "Find and shape architectural improvements"
+  default_prompt: "Use $dev-improve-architecture to surface structural improvements for this codebase and refine one into a plan-ready direction."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dev Zoom Out"
+  short_description: "Give higher-level codebase context"
+  default_prompt: "Use $dev-zoom-out to explain this area in the context of the broader system."
